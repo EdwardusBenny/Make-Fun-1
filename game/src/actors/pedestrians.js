@@ -100,6 +100,18 @@ export function createPedestrians(world) {
       }
       return;
     }
+    // dive out of the way of a car bearing down on us
+    const pv = player.vehicle;
+    if (pv && pv.speed > 7) {
+      const dx = h.x - pv.x, dz = h.z - pv.z;
+      const d = Math.hypot(dx, dz);
+      if (d < 14 && (dx * pv.vx + dz * pv.vz) / (d * pv.speed) > 0.75) {
+        const side = (dx * -pv.vz + dz * pv.vx) > 0 ? 1 : -1;
+        b.flee = 1.2; b.fx = h.x + pv.vz * side; b.fz = h.z - pv.vx * side;
+        if (rand() < 0.2) world.events.emit('scream', h);
+        return;
+      }
+    }
     if (b.pause > 0) { b.pause -= dt; h.speed = 0; return; }
     if (rand() < dt * 0.03) { b.pause = randRange(1.5, 5); return; }
     if (b.mode === 'beach') {

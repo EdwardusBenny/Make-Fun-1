@@ -12,8 +12,9 @@ export function say(lines, { blocking = true } = {}) {
     const c = CONTACTS[who];
     const name = c ? c.name : who === 'cass' ? 'Cass' : who;
     const cls = c ? c.css : '';
-    ctx.game.hud.subtitle(`<b class="${cls}">${name}:</b> ${text}`, 99);
     t = Math.max(2.6, text.length * 0.055);
+    // blocking lines are cleared by the step itself; a passing remark fades on its own
+    ctx.game.hud.subtitle(`<b class="${cls}">${name}:</b> ${text}`, blocking ? 99 : t);
   };
   return {
     start(ctx) { k = 0; show(ctx); },

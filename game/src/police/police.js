@@ -29,7 +29,15 @@ export function createPolice(world, { vehicles, combat, wanted }) {
       if (d < 95 || d > 190) continue;
       if (!lineBlocked(x, z, px, pz) && tries < 14) continue;
       if (vehicles.nearest(x, z, 8)) continue;
-      const v = vehicles.spawn('police', { x, z, heading: Math.atan2(px - x, pz - z) });
+      return spawnCarAt(x, z, Math.atan2(px - x, pz - z));
+    }
+    return null;
+  }
+
+  /** A cruiser with two officers at an exact spot. */
+  function spawnCarAt(x, z, heading) {
+    {
+      const v = vehicles.spawn('police', { x, z, heading });
       v.siren = true;
       v.ai = { kind: 'police', path: [], repath: 0, stuck: 0, reverse: 0 };
       const crew = [];
@@ -47,7 +55,6 @@ export function createPolice(world, { vehicles, combat, wanted }) {
       cars.push(v);
       return v;
     }
-    return null;
   }
 
   function deploy(v) {
@@ -283,6 +290,7 @@ export function createPolice(world, { vehicles, combat, wanted }) {
       bustTimer = 0;
     },
     spawnCar,
+    spawnCarAt,
   };
   void DIRS;
   return police;

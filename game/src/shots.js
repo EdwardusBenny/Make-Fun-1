@@ -82,21 +82,20 @@ const scenes = {
     const v = driveCar(game, 'vela', '#ffb000', x, z, 1, 5, 1, 24, LANE_INNER, 21);
     game.wanted.atLeast(4);
     const cops = [];
-    for (const [dz, dx] of [[-9, -3.4], [-15, 0.6], [-23, -2.6]]) {
-      const c = game.police.spawnCar(x, z + 300);
-      if (!c) continue;
-      c.x = x + dx; c.z = z + dz; c.heading = 0; c.vx = 0; c.vz = 21;
+    for (const [dz, dx] of [[-8, -3.4], [-12.5, 2.6], [-19, -0.6]]) {
+      const c = game.police.spawnCarAt(x + dx, z + dz, 0);
+      c.vx = 0; c.vz = 21;
       cops.push(c);
     }
     // clear the lane ahead and behind of civilians so the chase reads clearly
     for (const t of [...game.vehicles.list]) {
       if (t !== v && t.ai?.kind === 'traffic' && Math.abs(t.x - x) < 9 && t.z > z - 60 && t.z < z + 60) game.vehicles.remove(t);
     }
-    const look = () => { game.cam.idle = -100; game.cam.yaw = v.heading + Math.PI * 0.87; game.cam.pitch = 0.3; };
-    simulate(game, 1.3, look);
+    const look = () => { game.cam.idle = -100; game.cam.yaw = v.heading + Math.PI * 0.9; game.cam.pitch = 0.22; };
+    simulate(game, 0.45, look);
     game.heli.active = true;
-    game.heli.x = v.x + 6; game.heli.z = v.z - 30; game.heli.y = 21;
-    simulate(game, 0.2, look);
+    game.heli.x = v.x + 3; game.heli.z = v.z - 46; game.heli.y = 12;
+    simulate(game, 0.15, look);
     v.ai = null;
     game.hud.clearBanner();
     game.updateHud(DT);

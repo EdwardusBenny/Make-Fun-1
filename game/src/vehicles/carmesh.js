@@ -99,6 +99,22 @@ function shapeGeometries(spec) {
   return out;
 }
 
+let haloTex = null;
+const haloMats = new Map();
+function haloMaterial(color) {
+  if (!haloTex) {
+    const c = document.createElement('canvas');
+    c.width = c.height = 64;
+    const g = c.getContext('2d');
+    const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+    grd.addColorStop(0, 'rgba(255,255,255,1)'); grd.addColorStop(0.25, 'rgba(255,255,255,0.7)'); grd.addColorStop(1, 'rgba(255,255,255,0)');
+    g.fillStyle = grd; g.fillRect(0, 0, 64, 64);
+    haloTex = new THREE.CanvasTexture(c);
+  }
+  if (!haloMats.has(color)) haloMats.set(color, new THREE.SpriteMaterial({ map: haloTex, color, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true }));
+  return haloMats.get(color);
+}
+
 const wheelGeo = new THREE.CylinderGeometry(0.36, 0.36, 0.26, 14).rotateZ(Math.PI / 2);
 const rimGeo = new THREE.CylinderGeometry(0.22, 0.22, 0.28, 8).rotateZ(Math.PI / 2);
 let taxiSign = null, policeDoor = null;
@@ -158,6 +174,13 @@ export function buildCarMesh(spec, color) {
     bar.add(base, red, blue);
     body.add(bar);
     extras.red = red; extras.blue = blue;
+    // strobing halos so the bar reads from a distance
+    const haloR = new THREE.Sprite(haloMaterial('#ff2a3a'));
+    const haloB = new THREE.Sprite(haloMaterial('#3a6bff'));
+    haloR.scale.setScalar(2.8); haloB.scale.setScalar(2.8);
+    haloR.position.set(-0.32, 0.12, 0); haloB.position.set(0.32, 0.12, 0);
+    bar.add(haloR, haloB);
+    extras.haloR = haloR; extras.haloB = haloB;
   }
   return { root, body, bodyMesh, wheels, extras, paint };
 }

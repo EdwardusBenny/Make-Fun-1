@@ -165,9 +165,11 @@ export class Vehicle {
     }
     if (this.spec.police && this.extras.red) {
       const on = this.siren && !this.wrecked;
-      const ph = Math.floor(this.world.time * 6) % 2;
+      const ph = Math.floor(this.world.time * 6 + this.id) % 2;
       this.extras.red.material = on && ph ? CAR_MATERIALS.red : CAR_MATERIALS.off;
       this.extras.blue.material = on && !ph ? CAR_MATERIALS.blue : CAR_MATERIALS.off;
+      this.extras.haloR.visible = on && !!ph;
+      this.extras.haloB.visible = on && !ph;
     }
   }
 
