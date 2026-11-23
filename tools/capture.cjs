@@ -15,7 +15,7 @@ const path = require('path');
     page.on('pageerror', (e) => console.log('pageerror', s.name, e.message));
     await page.goto('http://localhost:8080/' + s.query);
     await page.waitForFunction(() => window.__shotReady === true, null, { timeout: 120000 });
-    let quality = 82, buf;
+    let quality = 84, buf;
     do { buf = await page.screenshot({ type: 'jpeg', quality }); quality -= 6; } while (buf.length > 250 * 1024 && quality > 30);
     fs.writeFileSync(path.join(dir, s.name), buf);
     console.log(s.name, Math.round(buf.length / 1024) + ' KiB', 'q' + (quality + 6));

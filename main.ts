@@ -21,7 +21,7 @@ import { buildDossier } from './vendor/makefun-game.ts';
 const here = fileURLToPath(new URL('.', import.meta.url));
 const out = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
 
-// Sunvale ships exactly four screenshots: the cover drive, the police chase, the pier shoot-out and the map.
+// Sunvale ships exactly four screenshots: the cover drive, the police chase, the pier shoot-out and the title screen over the sunset city.
 const shots = existsSync(join(here, 'screenshots')) ? readdirSync(join(here, 'screenshots')).filter((f) => /\.(jpe?g|png)$/i.test(f)) : [];
 if (shots.length < 3 || shots.length > 4) console.warn(`expected 3 or 4 screenshots, found ${shots.length}`);
 
