@@ -1,0 +1,77 @@
+/* The in-game overlay: minimap, bars, money, wanted stars, objective, speedometer, banners. */
+html, body { margin: 0; height: 100%; overflow: hidden; background: #0b0d14; font-family: "Trebuchet MS", "DejaVu Sans", Verdana, sans-serif; color: #fff; user-select: none; }
+#view { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+.hidden { display: none !important; }
+#hud { position: fixed; inset: 0; pointer-events: none; }
+.txt { text-shadow: 0 2px 0 #000, 0 0 6px rgba(0,0,0,.8); }
+
+#hud-top-right { position: absolute; top: 18px; right: 26px; text-align: right; }
+#hud-clock { font-size: 18px; font-weight: bold; color: #fff8e6; text-shadow: 0 2px 0 #000; letter-spacing: 2px; }
+#hud-weapon { margin-top: 4px; font-size: 15px; font-weight: bold; color: #ffe9b0; text-shadow: 0 2px 0 #000; letter-spacing: 1px; }
+#hud-ammo { margin-left: 10px; color: #fff; }
+#hud-money { font-family: "Impact", "Arial Black", "DejaVu Sans", sans-serif; font-weight: 900; font-size: 40px; color: #7dffa1; letter-spacing: 1px;
+  -webkit-text-stroke: 1.5px #0a2a12; text-shadow: 0 3px 0 #04140a, 0 0 12px rgba(0,0,0,.6); }
+#hud-stars { margin-top: 2px; font-size: 34px; letter-spacing: 2px; height: 40px; }
+#hud-stars span { color: rgba(255,255,255,.18); text-shadow: 0 2px 0 rgba(0,0,0,.4); }
+#hud-stars span.on { color: #ffd23f; text-shadow: 0 0 10px #ff8a00, 0 2px 0 #4a2a00; }
+#hud-stars.flash span.on { animation: starflash .5s steps(1) infinite; }
+@keyframes starflash { 50% { color: #fff; text-shadow: 0 0 12px #3af; } }
+
+#hud-objective { position: absolute; top: 20px; left: 26px; max-width: 520px; font-size: 19px; line-height: 1.35; padding: 10px 16px 11px;
+  background: linear-gradient(90deg, rgba(8,10,20,.72), rgba(8,10,20,.0)); border-left: 4px solid #ff5fa2; text-shadow: 0 2px 0 #000; }
+#hud-objective:empty { display: none; }
+#hud-objective b { color: #ffd23f; }
+#hud-objective .mission { display: block; font-size: 13px; letter-spacing: 3px; color: #ff9ec8; font-weight: bold; text-transform: uppercase; }
+#hud-help { position: absolute; top: 96px; left: 26px; max-width: 380px; font-size: 15px; background: rgba(0,0,0,.66); padding: 10px 14px; border-radius: 4px; line-height: 1.4; }
+#hud-help:empty { display: none; }
+#hud-help kbd { background: #fff; color: #111; border-radius: 3px; padding: 0 6px; font-weight: bold; font-family: inherit; }
+
+#hud-minimap-wrap { position: absolute; left: 26px; bottom: 22px; width: 230px; }
+#hud-minimap { width: 230px; height: 230px; border-radius: 50%; border: 4px solid rgba(10,12,20,.85); box-shadow: 0 4px 18px rgba(0,0,0,.6); display: block; background: #1f6f8b; }
+#hud-bars { display: flex; gap: 6px; margin-top: 8px; }
+.bar { flex: 1; height: 9px; background: rgba(0,0,0,.6); border: 2px solid rgba(0,0,0,.7); border-radius: 2px; }
+.bar i { display: block; height: 100%; width: 100%; }
+.bar.health i { background: linear-gradient(#78ff8e, #2fbf55); }
+.bar.armour i { background: linear-gradient(#8fd8ff, #2f8fdf); }
+#hud-district { margin-top: 6px; font-size: 16px; font-weight: bold; letter-spacing: 2px; color: #fff; text-shadow: 0 2px 0 #000; text-transform: uppercase; }
+
+#hud-vehicle { position: absolute; right: 30px; bottom: 26px; text-align: right; display: none; }
+#hud-vehicle.on { display: block; }
+#hud-vehicle-name { font-size: 16px; letter-spacing: 3px; color: #ffd8a8; font-weight: bold; text-shadow: 0 2px 0 #000; }
+#hud-speed { font-family: "Impact", "Arial Black", sans-serif; font-size: 64px; line-height: 1; color: #fff; text-shadow: 0 3px 0 #000, 0 0 14px rgba(255,95,162,.6); }
+#hud-vehicle .unit { font-size: 13px; letter-spacing: 4px; color: #ff9ec8; font-weight: bold; }
+#hud-damage { width: 160px; height: 6px; margin: 6px 0 0 auto; background: rgba(0,0,0,.6); }
+#hud-damage i { display: block; height: 100%; background: #ffb347; width: 100%; }
+
+#hud-radio { position: absolute; top: 18px; left: 50%; transform: translateX(-50%); font-size: 18px; font-weight: bold; letter-spacing: 3px; color: #fff;
+  text-shadow: 0 0 10px #ff5fa2, 0 2px 0 #000; opacity: 0; transition: opacity .4s; text-align: center; }
+#hud-radio.on { opacity: 1; }
+#hud-radio small { display: block; font-size: 12px; letter-spacing: 2px; color: #ffd8ef; }
+
+#hud-subtitle { position: absolute; bottom: 120px; left: 50%; transform: translateX(-50%); width: 70%; text-align: center; font-size: 22px; text-shadow: 0 2px 0 #000, 0 0 8px #000; }
+#hud-subtitle b { color: #ffd23f; }
+#hud-subtitle b.teo { color: #6fd3ff; }
+#hud-subtitle b.lena { color: #ff8fd0; }
+#hud-subtitle b.krane { color: #ff6b5b; }
+
+#hud-banner { position: absolute; top: 34%; left: 0; right: 0; text-align: center; opacity: 0; transition: opacity .5s; }
+#hud-banner.on { opacity: 1; }
+#hud-banner .big { font-family: "Impact", "Arial Black", sans-serif; font-size: 78px; letter-spacing: 4px; color: #ffd23f; -webkit-text-stroke: 2px #3a1500; text-shadow: 0 5px 0 #2a0e00, 0 0 30px rgba(255,120,0,.5); }
+#hud-banner .small { font-size: 24px; font-weight: bold; color: #fff; text-shadow: 0 2px 0 #000; margin-top: 6px; letter-spacing: 2px; }
+#hud-banner.wasted .big { color: #ff3b3b; -webkit-text-stroke: 2px #300; }
+#hud-banner.busted .big { color: #5fb7ff; -webkit-text-stroke: 2px #001a33; }
+
+#hud-crosshair { position: absolute; left: 50%; top: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px; display: none; }
+#hud-crosshair.on { display: block; }
+#hud-crosshair::before, #hud-crosshair::after { content: ""; position: absolute; background: #fff; box-shadow: 0 0 3px #000; }
+#hud-crosshair::before { left: 10px; top: 0; width: 2px; height: 22px; }
+#hud-crosshair::after { top: 10px; left: 0; height: 2px; width: 22px; }
+#hud-crosshair.hit::before, #hud-crosshair.hit::after { background: #ff3b3b; }
+
+#hud-timer { position: absolute; top: 160px; right: 26px; font-family: "Impact", "Arial Black", sans-serif; font-size: 34px; color: #fff; text-shadow: 0 2px 0 #000; }
+#hud-timer:empty { display: none; }
+#hud-hitflash { position: absolute; inset: 0; box-shadow: inset 0 0 160px rgba(255,0,0,.0); transition: box-shadow .25s; }
+#hud-hitflash.on { box-shadow: inset 0 0 160px rgba(255,0,0,.65); }
+
+#bigmap { position: fixed; inset: 0; width: 100%; height: 100%; background: #0c3d52; }
+#loading { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 28px; letter-spacing: 4px; background: #120c1c; color: #ffb36b; }

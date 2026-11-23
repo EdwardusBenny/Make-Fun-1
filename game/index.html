@@ -3,17 +3,85 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Block Dodger</title>
-<style>
-  html, body { margin: 0; height: 100%; overflow: hidden; background: #11141b; }
-  #game { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
-  /* Read aloud, never shown: the status line screen readers announce. */
-  #status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-</style>
+<title>SUNVALE — Salt &amp; Neon</title>
+<link rel="stylesheet" href="./css/hud.css">
+<link rel="stylesheet" href="./css/menus.css">
+<script type="importmap">
+{ "imports": { "three": "./vendor/three.module.min.js" } }
+</script>
 </head>
 <body>
-<canvas id="game" aria-label="Block Dodger: move the paddle left and right to dodge falling blocks and catch coins"></canvas>
-<p id="status" role="status" aria-live="polite"></p>
+<canvas id="view" aria-label="Sunvale, an open-world crime game"></canvas>
+
+<div id="hud" class="hidden">
+  <div id="hud-top-right">
+    <div id="hud-clock">17:30</div>
+    <div id="hud-weapon"><span id="hud-weapon-name">FISTS</span><span id="hud-ammo"></span></div>
+    <div id="hud-money">$0</div>
+    <div id="hud-stars"></div>
+  </div>
+  <div id="hud-objective"></div>
+  <div id="hud-help"></div>
+  <div id="hud-minimap-wrap">
+    <canvas id="hud-minimap" width="260" height="260"></canvas>
+    <div id="hud-bars"><div class="bar health"><i id="hud-health"></i></div><div class="bar armour"><i id="hud-armour"></i></div></div>
+    <div id="hud-district"></div>
+  </div>
+  <div id="hud-vehicle"><div id="hud-vehicle-name"></div><div id="hud-speed">0</div><div class="unit">KM/H</div><div id="hud-damage"><i></i></div></div>
+  <div id="hud-radio"></div>
+  <div id="hud-subtitle"></div>
+  <div id="hud-banner"><div class="big"></div><div class="small"></div></div>
+  <div id="hud-crosshair"></div>
+  <div id="hud-timer"></div>
+  <div id="hud-hitflash"></div>
+</div>
+
+<canvas id="bigmap" class="hidden" width="1280" height="720"></canvas>
+
+<div id="menu-title" class="menu hidden">
+  <div class="logo"><canvas id="logo" width="900" height="300"></canvas></div>
+  <div class="menu-list">
+    <button data-act="continue">Continue</button>
+    <button data-act="new">New Game</button>
+    <button data-act="controls">Controls</button>
+  </div>
+  <div class="menu-foot">A story of Sunvale, the coast that never sleeps</div>
+</div>
+
+<div id="menu-pause" class="menu hidden">
+  <h2>PAUSED</h2>
+  <div id="pause-stats"></div>
+  <div class="menu-list">
+    <button data-act="resume">Resume</button>
+    <button data-act="map">Map</button>
+    <button data-act="save">Save Game</button>
+    <button data-act="controls">Controls</button>
+    <button data-act="quit">Quit to Title</button>
+  </div>
+</div>
+
+<div id="menu-controls" class="menu hidden">
+  <h2>CONTROLS</h2>
+  <table class="keys">
+    <tr><td>W A S D</td><td>Walk / drive</td></tr>
+    <tr><td>Mouse</td><td>Look around (click to capture)</td></tr>
+    <tr><td>Shift</td><td>Sprint</td></tr>
+    <tr><td>Space</td><td>Jump / handbrake</td></tr>
+    <tr><td>F</td><td>Enter, exit or steal a vehicle</td></tr>
+    <tr><td>Left click</td><td>Punch / shoot</td></tr>
+    <tr><td>Right click</td><td>Aim</td></tr>
+    <tr><td>1 2 3 / wheel</td><td>Fists, pistol, SMG</td></tr>
+    <tr><td>E</td><td>Use shops and start activities</td></tr>
+    <tr><td>Q</td><td>Next radio station</td></tr>
+    <tr><td>H</td><td>Horn</td></tr>
+    <tr><td>C</td><td>Look behind (in a car)</td></tr>
+    <tr><td>M</td><td>City map</td></tr>
+    <tr><td>Esc / P</td><td>Pause</td></tr>
+  </table>
+  <div class="menu-list"><button data-act="back">Back</button></div>
+</div>
+
+<div id="loading">Building Sunvale…</div>
 <script type="module" src="./src/main.js"></script>
 </body>
 </html>
