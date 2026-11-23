@@ -78,6 +78,20 @@ const { chromium } = require('playwright');
     log.push('draw calls ' + g.renderer.info.render.calls + ' tris ' + g.renderer.info.render.triangles);
     return log;
   });
+  // save, reload, continue
+  await page.evaluate(() => window.__sunvale.save());
+  await page.goto('http://localhost:8080/?seed=6');
+  await page.waitForFunction(() => window.__sunvale, null, { timeout: 60000 });
+  await page.waitForTimeout(1000);
+  const cont = await page.evaluate(() => {
+    const b = document.querySelector('button[data-act=continue]');
+    const visible = b && !b.disabled && b.style.display !== 'none';
+    b.click();
+    const g = window.__sunvale;
+    for (let k = 0; k < 30; k++) g.step(1 / 30, null);
+    return `continue visible ${visible}; money ${g.player.money}; story ${[...g.missions.completed].join(',')}; smg ${g.player.arsenal.smg.owned}; state ${g.state}`;
+  });
+  result.push(cont);
   console.log(result.join('\n'));
   console.log('errors:', errors.length ? errors.slice(0, 10).join('\n') : 'none');
   await browser.close();

@@ -135,7 +135,7 @@ export function createCombat(world, fx, tracers) {
     const ax = tx + (rand() - 0.5) * off * 2, ay = ty + (rand() - 0.5) * off, az = tz + (rand() - 0.5) * off * 2;
     const dx = ax - m.x, dy = ay - m.y, dz = az - m.z;
     const l = Math.hypot(dx, dy, dz);
-    return shoot(shooter, weaponId, m, { x: dx / l, y: dy / l, z: dz / l }, { spread: 0.004, damageScale: target === world.player.human ? 0.36 : 1 });
+    return shoot(shooter, weaponId, m, { x: dx / l, y: dy / l, z: dz / l }, { spread: 0.004, damageScale: target === world.player.human ? 0.27 : 1 });
   }
 
   world.events.on('explosion', (e) => {

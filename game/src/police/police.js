@@ -178,7 +178,7 @@ export function createPolice(world, { vehicles, combat, wanted }) {
       else { o.speed = 0; o.faceToward(px, pz, dt); }
       return;
     }
-    o.aiming = sees && d < 40;
+    o.aiming = sees && d < 36;
     if (o.aiming) {
       o.faceToward(px, pz, dt, 14);
       // close the gap while firing, strafe a little
@@ -187,7 +187,7 @@ export function createPolice(world, { vehicles, combat, wanted }) {
       else o.move(-(pz - o.z) * strafe, (px - o.x) * strafe, 1.4, dt, false);
       b.cool -= dt;
       if (b.cool <= 0) {
-        b.cool = 0.75 + rand() * 0.7;
+        b.cool = 1.0 + rand() * 0.9;
         combat.npcShoot(o, p.human, 'pistol', 0.48 + wanted.level * 0.04);
       }
     } else {
