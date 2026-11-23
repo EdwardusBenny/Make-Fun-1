@@ -62,8 +62,16 @@ export function createMarkers(scene) {
       items.add(m);
       return m;
     },
-    update(dt, time) {
+    /** `eye` is the camera position: beams fade out with distance so a far-off objective never
+     *  saturates into a flat white block on the horizon (the minimap GPS points the way there). */
+    update(dt, time, eye = null) {
       for (const m of items) {
+        if (eye) {
+          const d = Math.hypot(m.x - eye.x, m.z - eye.z);
+          const fade = Math.min(1, Math.max(0, 1 - (d - 45) / 70));
+          m.group.children[0].visible = fade > 0.01;
+          m.group.children[0].material.opacity = fade;
+        }
         if (m.icon) m.icon.position.y = m.group.children[0].scale.y + 1.2 + Math.sin(time * 2.5) * 0.25;
         m.group.children[1].scale.setScalar(m.radius * (1 + Math.sin(time * 4) * 0.05));
       }

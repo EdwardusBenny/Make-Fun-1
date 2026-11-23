@@ -21,11 +21,11 @@ function createPool(scene, capacity, additive, tex) {
   geo.setAttribute('color', new THREE.BufferAttribute(col, 4).setUsage(THREE.DynamicDrawUsage));
   geo.setAttribute('size', new THREE.BufferAttribute(size, 1).setUsage(THREE.DynamicDrawUsage));
   const mat = new THREE.ShaderMaterial({
-    uniforms: { map: { value: tex }, scale: { value: 600 } },
+    uniforms: { map: { value: tex }, scale: { value: 600 }, glowGain: { value: additive ? 1.7 : 1 } },
     vertexShader: `attribute float size; attribute vec4 color; varying vec4 vColor; uniform float scale;
       void main(){ vColor = color; vec4 mv = modelViewMatrix * vec4(position,1.0); gl_PointSize = size * scale / -mv.z; gl_Position = projectionMatrix * mv; }`,
-    fragmentShader: `uniform sampler2D map; varying vec4 vColor;
-      void main(){ vec4 t = texture2D(map, gl_PointCoord); gl_FragColor = vec4(vColor.rgb, vColor.a * t.a); if (gl_FragColor.a < 0.01) discard; }`,
+    fragmentShader: `uniform sampler2D map; uniform float glowGain; varying vec4 vColor;
+      void main(){ vec4 t = texture2D(map, gl_PointCoord); gl_FragColor = vec4(vColor.rgb * glowGain, vColor.a * t.a); if (gl_FragColor.a < 0.01) discard; }`,
     transparent: true, depthWrite: false, blending: additive ? THREE.AdditiveBlending : THREE.NormalBlending,
   });
   const points = new THREE.Points(geo, mat);

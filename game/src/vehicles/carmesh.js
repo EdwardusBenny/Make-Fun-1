@@ -18,8 +18,9 @@ const shared = {
   tire: new THREE.MeshStandardMaterial({ color: '#151515', roughness: 0.9 }),
   rim: new THREE.MeshStandardMaterial({ color: '#c8ccd2', roughness: 0.3, metalness: 0.8 }),
   burnt: new THREE.MeshStandardMaterial({ color: '#1d1a18', roughness: 1 }),
-  red: new THREE.MeshBasicMaterial({ color: '#ff2030' }),
-  blue: new THREE.MeshBasicMaterial({ color: '#2050ff' }),
+  // light-bar lamps are brighter than white so the bloom pass gives them a halo
+  red: new THREE.MeshBasicMaterial({ color: new THREE.Color('#ff2030').multiplyScalar(4) }),
+  blue: new THREE.MeshBasicMaterial({ color: new THREE.Color('#2050ff').multiplyScalar(5) }),
   off: new THREE.MeshStandardMaterial({ color: '#333', roughness: 0.5 }),
 };
 export const CAR_MATERIALS = shared;

@@ -12,8 +12,11 @@ const KEYS = [
   [8, '#4f9fe8', '#ffe0c0', '#fff0d8', 2.6, 1.0, '#e8d8cc'],
   [12, '#2f86e8', '#cfe8ff', '#ffffff', 3.0, 1.1, '#d0e4f4'],
   [16, '#2c6fd6', '#ffd8a8', '#fff0d0', 2.9, 1.0, '#e8cdb4'],
-  [18, '#2f5cc0', '#ffa860', '#ffc080', 2.7, 0.9, '#eab08c'],
-  [19.3, '#3a3f88', '#ff6a4a', '#ff8a50', 1.6, 0.75, '#e07a6a'],
+  // golden hour: a deep blue zenith over an amber horizon, a strong low orange sun, less fill so
+  // shadows read cool and deep
+  [17, '#2860c8', '#ffc488', '#ffd096', 3.2, 0.78, '#f0c49a'],
+  [18, '#2a4fb0', '#ff9a52', '#ffa955', 3.3, 0.66, '#eea47a'],
+  [19.3, '#33388a', '#ff5a3a', '#ff7a42', 2.0, 0.6, '#d86e5c'],
   [20.3, '#141a48', '#7a3a6a', '#c080ff', 0.35, 0.5, '#3a2a50'],
   [22, '#070a20', '#22224a', '#8090ff', 0.2, 0.38, '#181a38'],
   [24, '#060818', '#1a1a3a', '#8090ff', 0.18, 0.35, '#141631'],

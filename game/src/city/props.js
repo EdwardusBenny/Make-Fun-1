@@ -214,7 +214,7 @@ export function buildProps(scene, palmSpots, extras) {
     group,
     update(time, night) {
       poolMat.opacity = night * 0.55;
-      bulbMat.color.setRGB(0.6 + night * 0.4, 0.55 + night * 0.4, 0.4 + night * 0.4);
+      bulbMat.color.setRGB(0.6 + night * 2.4, 0.55 + night * 2.1, 0.4 + night * 1.4);
       if (Math.floor(time * 4) === lastSignalUpdate) return;
       lastSignalUpdate = Math.floor(time * 4);
       signals.forEach((s, k) => {

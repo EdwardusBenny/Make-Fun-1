@@ -186,9 +186,9 @@ export function buildLandmarks(scene) {
         const a = g.a + rot;
         g.mesh.position.set(Math.cos(a) * R, Math.sin(a) * R - 1.4, 0);
       }
-      bulbs.material.color.setScalar(0.6 + night * 0.4);
-      beacon.material.color.setRGB(1, 0.95, 0.7).multiplyScalar(0.6 + 0.4 * Math.max(0, Math.sin(time * 2)));
-      signMat.emissiveIntensity = 0.8 + night * 1.2;
+      bulbs.material.color.setRGB(1.3 + night * 1.7, 1.1 + night * 1.3, 1.25 + night * 1.5);
+      beacon.material.color.setRGB(1, 0.95, 0.7).multiplyScalar(1 + 3 * Math.max(0, Math.sin(time * 2)));
+      signMat.emissiveIntensity = 1.8 + night * 1.4;
       for (const b of boats) {
         b.g.position.y = SEA_LEVEL + Math.sin(time * 1.3 + b.phase) * 0.15;
         b.g.rotation.z = Math.sin(time * 0.9 + b.phase) * 0.05;

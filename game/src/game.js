@@ -12,6 +12,7 @@ import { createPlayer } from './actors/player.js';
 import { createCombat } from './combat/combat.js';
 import { createParticles } from './fx/particles.js';
 import { createTracers } from './fx/tracers.js';
+import { createPost } from './fx/post.js';
 import { createWanted } from './police/wanted.js';
 import { createPolice } from './police/police.js';
 import { createHelicopter } from './police/helicopter.js';
@@ -36,6 +37,7 @@ export function createGame(canvas, { audio = null } = {}) {
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
   const scene = new THREE.Scene();
+  const post = createPost(renderer);
   const camera = new THREE.PerspectiveCamera(62, 16 / 9, 0.3, 3200);
 
   const events = createEvents();
@@ -219,13 +221,15 @@ export function createGame(canvas, { audio = null } = {}) {
     }
     wanted.update(dt);
     pickups.update(dt);
-    markers.update(dt, world.time);
+    markers.update(dt, world.time, camera.position);
     cam.update(dt, { human: P(), vehicle: player.vehicle });
     fx.update(dt);
     tracers.update(dt);
     city.update(world.time, dt, world.hour, world.focus);
-    CAR_MATERIALS.head.emissiveIntensity = 0.6 + city.sky.night * 2.4;
-    CAR_MATERIALS.tail.emissiveIntensity = 0.5 + city.sky.night * 1.6;
+    CAR_MATERIALS.head.emissiveIntensity = 1.6 + city.sky.night * 2.4;
+    CAR_MATERIALS.tail.emissiveIntensity = 1.4 + city.sky.night * 1.6;
+    // the glow threshold drops after dusk so lit windows and street lamps bloom too
+    post.threshold.value = 1.15 - city.sky.night * 0.45;
     audio?.update(dt, game);
   };
 
@@ -248,7 +252,14 @@ export function createGame(canvas, { audio = null } = {}) {
     if (game.mapOpen) bigmap.draw({ x: world.focus.x, z: world.focus.z, heading: v ? v.heading : h.heading }, blips, gps, MAP_LEGEND);
   };
 
-  game.render = () => renderer.render(scene, camera);
+  game.post = post;
+  game.render = () => {
+    // haze thins out as the camera climbs, so aerial and title views see across the whole city
+    const lift = Math.max(0, camera.position.y - 20);
+    scene.fog.near = 170 + lift * 2.5;
+    scene.fog.far = 1250 + lift * 11;
+    post.render(scene, camera);
+  };
   game.respawn = respawn;
   return game;
 }

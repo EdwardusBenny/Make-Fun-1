@@ -84,8 +84,8 @@ export function buildBuildings(scene, envMap) {
   // signs: one textured plane each, glowing at night
   const signMats = [];
   for (const s of signs) {
-    const mat = new THREE.MeshStandardMaterial({ map: s.tex, emissiveMap: s.tex, emissive: new THREE.Color('#ffffff'), emissiveIntensity: s.neon ? 0.6 : 0.15, roughness: 0.5, side: THREE.DoubleSide });
-    mat.userData.baseGlow = s.neon ? 0.6 : 0.15;
+    const mat = new THREE.MeshStandardMaterial({ map: s.tex, emissiveMap: s.tex, emissive: new THREE.Color('#ffffff'), emissiveIntensity: s.neon ? 1.7 : 0.15, roughness: 0.5, side: THREE.DoubleSide });
+    mat.userData.baseGlow = s.neon ? 1.7 : 0.15;
     signMats.push(mat);
     const mesh = new THREE.Mesh(new THREE.PlaneGeometry(s.w, s.h), mat);
     mesh.position.set(s.x, s.y, s.z);
@@ -100,7 +100,7 @@ export function buildBuildings(scene, envMap) {
     setNight(f) {
       for (const s of styles) materials[s].emissiveIntensity = f * (s === 'warehouse' ? 0.4 : 1.1);
       shopMat.emissiveIntensity = 0.1 + f * 1.0;
-      for (const m of signMats) m.emissiveIntensity = m.userData.baseGlow + f * 1.2;
+      for (const m of signMats) m.emissiveIntensity = m.userData.baseGlow + f * 1.6;
     },
   };
 }

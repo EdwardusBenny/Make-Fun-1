@@ -21,6 +21,7 @@ finale), a street race, a gun shop, a paint shop that loses the cops, and 12 hid
 * Steal and drive eight invented vehicles, with traffic that obeys working signals and pedestrians who flee.
 * Fists, the Kestrel 9 pistol and the Wasp SMG; a 0–5 star wanted level with cruisers, officers and a helicopter.
 * HUD with a rotating minimap and GPS route, full city map (M), three procedural radio stations (Q).
+* HDR rendering with its own bloom and golden-hour colour grade: neon, light bars, headlights, tracers and fire glow.
 * Save/continue in localStorage.
 
 ## Controls
@@ -30,7 +31,7 @@ M map · Esc/P pause.
 
 ## Development
 * `node serve.ts` serves `game/` on http://localhost:8080.
-* `node tools/capture.cjs` renders the scenes in `shots.json` (`?shot=cover|chase|combat|map|title&seed=1`) into `screenshots/`.
+* `node tools/capture.cjs` renders the scenes in `shots.json` (`?shot=cover|chase|combat|vista|map|title|look&seed=1`) into `screenshots/`.
 * `node tools/logictest.cjs` plays through the story and systems headlessly.
 * `mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts` builds the hand-in.
 

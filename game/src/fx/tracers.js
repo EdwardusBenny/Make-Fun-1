@@ -29,7 +29,9 @@ export function createTracers(scene, capacity = 96) {
         const t0 = 1 - f;
         const ax = it.a[0] + (it.b[0] - it.a[0]) * t0 * 0.6, ay = it.a[1] + (it.b[1] - it.a[1]) * t0 * 0.6, az = it.a[2] + (it.b[2] - it.a[2]) * t0 * 0.6;
         pos.set([ax, ay, az, it.b[0], it.b[1], it.b[2]], n * 6);
-        col.set([it.color[0] * f, it.color[1] * f, it.color[2] * f, it.color[0], it.color[1], it.color[2]], n * 6);
+        // over-bright (HDR) colours so the bloom pass thickens the streak into a visible glow
+        const g = 4;
+        col.set([it.color[0] * f * g, it.color[1] * f * g, it.color[2] * f * g, it.color[0] * g, it.color[1] * g, it.color[2] * g], n * 6);
         n++;
       }
       geo.setDrawRange(0, n * 2);
