@@ -1,5 +1,6 @@
 // Paints the city plan once into an offscreen canvas (1 pixel = 1 metre): sea, hills, beach,
 // pier, quay, roads and blocks tinted by district. The minimap and the full map both sample it.
+import { allColliders } from '../city/collision.js';
 import { NX, NZ, PITCH, HALF_ROAD, CITY_W, CITY_H, SHORE_Z, QUAY_X, PIER, blockRect, blockDistrict, SPECIAL_BLOCKS } from '../city/layout.js';
 
 export const MAP_X0 = -260, MAP_Z0 = -260, MAP_W = 1360, MAP_H = 1320;
@@ -29,6 +30,20 @@ export function paintCityMap() {
       g.fillStyle = sp === 'park' ? '#5fae5a' : BLOCK_COLORS[blockDistrict(i, j)];
       g.fillRect(r.x0 + 3, r.z0 + 3, r.x1 - r.x0 - 6, r.z1 - r.z0 - 6);
     }
+  }
+  // building footprints and container stacks, from the collision boxes
+  for (const b of allColliders()) {
+    if (b.tag !== 'building' && b.tag !== 'container' && b.tag !== 'fountain') continue;
+    const tall = Math.min(1, b.y1 / 120);
+    g.fillStyle = b.tag === 'container' ? '#8c6f5a' : b.tag === 'fountain' ? '#8fd6ff' : `rgba(${235 - tall * 70},${228 - tall * 80},${214 - tall * 50},0.9)`;
+    g.fillRect(b.x0, b.z0, b.x1 - b.x0, b.z1 - b.z0);
+    g.strokeStyle = 'rgba(40,30,40,0.45)'; g.lineWidth = 1;
+    g.strokeRect(b.x0 + 0.5, b.z0 + 0.5, b.x1 - b.x0 - 1, b.z1 - b.z0 - 1);
+  }
+  for (const b of allColliders()) {
+    if (b.tag !== 'palm') continue;
+    g.fillStyle = '#3f8a3a';
+    g.beginPath(); g.arc((b.x0 + b.x1) / 2, (b.z0 + b.z1) / 2, 2.2, 0, Math.PI * 2); g.fill();
   }
   // centre lines
   g.strokeStyle = 'rgba(255,214,90,0.35)'; g.lineWidth = 1;

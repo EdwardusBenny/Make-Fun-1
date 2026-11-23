@@ -10,6 +10,9 @@ function key(cx, cz) { return cx * 73856093 ^ cz * 19349663; }
 
 export function clearColliders() { boxes.length = 0; grid.clear(); }
 
+/** Every collider (read-only use: the map paints building footprints from them). */
+export function allColliders() { return boxes; }
+
 /** Add a solid box; y0/y1 give its vertical extent for bullets. */
 export function addCollider(x0, z0, x1, z1, y1 = 30, y0 = 0, tag = 'wall') {
   const b = { x0: Math.min(x0, x1), z0: Math.min(z0, z1), x1: Math.max(x0, x1), z1: Math.max(z0, z1), y0, y1, tag, stamp: 0 };

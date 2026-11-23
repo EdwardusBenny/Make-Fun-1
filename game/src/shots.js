@@ -56,14 +56,14 @@ const scenes = {
     game.missions.setCompleted(['homecoming']);
     giveWeapon(game.player.arsenal, 'pistol', 60);
     game.player.arsenal.current = 'pistol';
-    const z = 8 * PITCH + LANE_OUTER, x = 2 * PITCH + 24;
+    const z = 8 * PITCH + LANE_OUTER, x = 2 * PITCH + 26;
     game.place(x, z, Math.PI / 2);
     game.populate();
-    const v = driveCar(game, 'vela', '#ff3b3b', x, z, 0, 2, 8, 24, LANE_OUTER, 17);
+    const v = driveCar(game, 'vela', '#ff3b3b', x, z, 0, 2, 8, 26, LANE_OUTER, 16);
     game.missions.startById('bait');
     game.missions.skipTo(3);
-    game.cam.yaw = v.heading + 0.32; game.cam.pitch = 0.1; game.cam.idle = -100;
-    simulate(game, 4.2, () => { game.cam.idle = -100; });
+    game.cam.yaw = v.heading + 0.22; game.cam.pitch = 0.17; game.cam.idle = -100;
+    simulate(game, 2.2, () => { game.cam.idle = -100; game.cam.yaw = v.heading + 0.22; });
     v.ai = null;
     game.player.human.health = 86;
     game.player.human.armour = 40;
@@ -92,7 +92,7 @@ const scenes = {
     for (const t of [...game.vehicles.list]) {
       if (t !== v && t.ai?.kind === 'traffic' && Math.abs(t.x - x) < 9 && t.z > z - 60 && t.z < z + 60) game.vehicles.remove(t);
     }
-    const look = () => { game.cam.idle = -100; game.cam.yaw = v.heading + Math.PI * 0.8; game.cam.pitch = 0.34; };
+    const look = () => { game.cam.idle = -100; game.cam.yaw = v.heading + Math.PI * 0.87; game.cam.pitch = 0.3; };
     simulate(game, 1.3, look);
     game.heli.active = true;
     game.heli.x = v.x + 6; game.heli.z = v.z - 30; game.heli.y = 21;
@@ -140,14 +140,28 @@ const scenes = {
   async map(game) {
     begin(game, 17.5, 41760);
     game.missions.setCompleted(['homecoming', 'bait', 'repo']);
-    game.place(3 * PITCH - 3.5, 5 * PITCH + 30, Math.PI);
+    game.place(6 * PITCH - 3.5, 6 * PITCH + 30, Math.PI);
     game.populate();
-    game.missions.startById('lowtide');
-    game.missions.skipTo(2);
-    simulate(game, 0.5);
+    game.wanted.atLeast(2);
+    simulate(game, 3);
     game.mapOpen = true;
     document.getElementById('bigmap').classList.remove('hidden');
     game.updateHud(DT);
+  },
+  /** Free camera for checking the city: &x=&z=&y=&lx=&lz=&hour= */
+  async look(game) {
+    const q = new URLSearchParams(location.search);
+    const n = (k, d) => Number(q.get(k) ?? d);
+    game.state = 'title';
+    game.world.hour = n('hour', 17.4);
+    game.clockSpeed = 0;
+    game.player.human.setVisible(false);
+    game.place(n('x', 400), n('z', 600), 0);
+    game.populate();
+    simulate(game, 0.5);
+    game.camera.position.set(n('x', 400), n('y', 30), n('z', 600));
+    game.camera.lookAt(n('lx', 400), n('ly', 5), n('lz', 400));
+    game.hud.show(false);
   },
   async title(game) {
     game.state = 'title';

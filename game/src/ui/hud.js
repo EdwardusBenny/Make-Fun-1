@@ -61,7 +61,7 @@ export function createHud() {
       // district name pops up when it changes
       if (s.district !== lastDistrict) { lastDistrict = s.district; districtTime = 4; }
       const dname = DISTRICTS[s.district]?.name ?? '';
-      set('district', el.district, 'innerHTML', districtTime > 0 ? `${dname}<br><small style="font-size:12px;letter-spacing:1px;opacity:.8">${s.street}</small>` : `<small style="font-size:12px;letter-spacing:1px;opacity:.8">${s.street}</small>`);
+      set('district', el.district, 'innerHTML', `<span style="color:${districtTime > 0 ? '#ffd23f' : '#fff'}">${dname}</span><br><small style="font-size:12px;letter-spacing:1px;opacity:.8">${s.street}</small>`);
       if (districtTime > 0) districtTime -= dt;
       el.vehicle.classList.toggle('on', !!s.vehicle);
       if (s.vehicle) {

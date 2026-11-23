@@ -5,7 +5,7 @@ export const VEHICLES = {
   pico: { name: 'Pico Hatch', w: 1.75, l: 3.8, h: 1.48, maxSpeed: 40, accel: 10, grip: 7.5, mass: 1000, steer: 0.62, shape: 'hatch', health: 700,
     paints: ['#ff6b6b', '#ffd23f', '#4ecdc4', '#ffffff', '#a8e6cf', '#ff9ec8', '#5aa9e6'] },
   marlin: { name: 'Marlin Sedan', w: 1.85, l: 4.6, h: 1.45, maxSpeed: 47, accel: 11, grip: 7, mass: 1400, steer: 0.56, shape: 'sedan', health: 900,
-    paints: ['#e9ecef', '#2b2d42', '#8d99ae', '#b5838d', '#386641', '#6d597a', '#c9ada7', '#14213d'] },
+    paints: ['#e9ecef', '#2b2d42', '#8d99ae', '#e07a5f', '#3d8c6a', '#9a7bb0', '#c9ada7', '#3a6ea5', '#f2cc8f'] },
   vela: { name: 'Vela GT', w: 1.95, l: 4.45, h: 1.22, maxSpeed: 64, accel: 17, grip: 8.5, mass: 1250, steer: 0.58, shape: 'coupe', health: 800,
     paints: ['#ff3b3b', '#ffb000', '#00b4d8', '#f72585', '#111111', '#ffffff'] },
   dune: { name: 'Dunerunner Pickup', w: 2.0, l: 5.1, h: 1.85, maxSpeed: 42, accel: 10, grip: 6.5, mass: 1900, steer: 0.52, shape: 'pickup', health: 1200,

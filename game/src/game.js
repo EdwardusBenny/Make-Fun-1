@@ -26,6 +26,7 @@ import { createPickups } from './missions/pickups.js';
 import { createMarkers } from './missions/markers.js';
 import { mapBlips, MAP_LEGEND } from './ui/blips.js';
 import { rand } from './core/random.js';
+import { CAR_MATERIALS } from './vehicles/carmesh.js';
 
 export function createGame(canvas, { audio = null } = {}) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
@@ -223,6 +224,8 @@ export function createGame(canvas, { audio = null } = {}) {
     fx.update(dt);
     tracers.update(dt);
     city.update(world.time, dt, world.hour, world.focus);
+    CAR_MATERIALS.head.emissiveIntensity = 0.6 + city.sky.night * 2.4;
+    CAR_MATERIALS.tail.emissiveIntensity = 0.5 + city.sky.night * 1.6;
     audio?.update(dt, game);
   };
 

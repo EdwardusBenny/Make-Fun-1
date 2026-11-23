@@ -1,5 +1,6 @@
 // Gathers what the minimap and city map show: mission contacts, shops and activities, the current
 // objective, enemies, police cars and officers (flashing), mission vehicles and pickups.
+import { PLACES } from '../city/layout.js';
 
 export const MAP_LEGEND = [
   ['#6fd3ff', 'Uncle Teo (missions)', 'T'],
@@ -10,10 +11,15 @@ export const MAP_LEGEND = [
   ['#ffb347', 'Street race', 'R'],
   ['#ff4040', 'Enemy', null],
   ['#3a6bff', 'Police', null],
+  ['#ffffff', 'Sunvale General (hospital)', 'H'],
+  ['#9db8ff', 'SVPD Central', '★'],
 ];
 
 export function mapBlips(game) {
-  const out = [];
+  const out = [
+    { x: PLACES.hospital.x, z: PLACES.hospital.z, color: '#ffffff', size: 6, label: 'H' },
+    { x: PLACES.police.x, z: PLACES.police.z, color: '#9db8ff', size: 6, label: '★' },
+  ];
   const flash = Math.floor(game.world.time * 4) % 2 === 0;
   for (const b of game.missions.blips()) out.push(b);
   for (const b of game.activities.blips()) out.push(b);

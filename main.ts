@@ -1,24 +1,29 @@
-// A working gta6-01 entry (Node 22, standard library only): the game is this directory's
-// game/ folder, plain static files a desktop browser loads offline (game/index.html and its ES
-// modules, no library and no network request), and the program hands it in. It copies game/ and
-// screenshots/ from beside this file to /output and writes /output/dossier.json, the summary the
-// judge reads, with the vendored make.fun library. Only the plumbing, not an open world: Block
-// Dodger, a plain 2D canvas game where a paddle dodges falling blocks and catches coins, with a
-// title screen, score, lives and levels, game over and restart, flat colours and no sound. Build
-// your own open-world crime game in its place (three.js or any library you vendor under game/),
-// put your 3 or 4 PNG or JPEG screenshots in screenshots/ (the first by name is the cover) and run it.
+// SUNVALE — Salt & Neon: hand-in program for the make.fun "Make GTA 6" bounty (gta6-01).
 //
-// Serve it locally with `node serve.ts`, then open http://localhost:8080.
-// Outside the grader's container, MAKEFUN_OUTPUT_DIR stands in for /output:
-//   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
+// The game itself lives in game/: static files a desktop browser opens offline from
+// game/index.html (ES modules under game/src, stylesheets under game/css, and three.js r176's
+// minified module build vendored in game/vendor, wired up with one import map). Everything you
+// see in Sunvale (the city, cars, people, textures, sky, music) is generated in code at load time.
+//
+// This program (Node 22, standard library only) copies game/ and screenshots/ from beside this
+// file into the output directory and writes dossier.json there with the vendored make.fun library,
+// which summarises the entry for the judge.
+//
+// Play locally:   node serve.ts            then open http://localhost:8080
+// Screenshots:    node tools/capture.cjs   (with the server running; scenes are listed in shots.json)
+// Hand in:        mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts   (the grader uses /output)
 
-import { cpSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildDossier } from './vendor/makefun-game.ts';
 
 const here = fileURLToPath(new URL('.', import.meta.url));
 const out = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
+
+// Sunvale ships exactly four screenshots: the cover drive, the police chase, the pier shoot-out and the map.
+const shots = existsSync(join(here, 'screenshots')) ? readdirSync(join(here, 'screenshots')).filter((f) => /\.(jpe?g|png)$/i.test(f)) : [];
+if (shots.length < 3 || shots.length > 4) console.warn(`expected 3 or 4 screenshots, found ${shots.length}`);
 
 mkdirSync(out, { recursive: true });
 cpSync(join(here, 'game'), join(out, 'game'), { recursive: true });
@@ -39,3 +44,4 @@ writeFileSync(
     game_path_max_bytes: 1000,
   }),
 );
+console.log(`Sunvale handed in to ${out}: game/, ${shots.length} screenshots and dossier.json`);

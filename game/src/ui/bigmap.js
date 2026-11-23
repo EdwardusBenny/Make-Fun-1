@@ -17,8 +17,8 @@ export function createBigMap(canvas, mapImage) {
     draw(player, blips, gps, legend) {
       const W = canvas.width = window.innerWidth, H = canvas.height = window.innerHeight;
       g.fillStyle = '#2a86a8'; g.fillRect(0, 0, W, H);
-      const scale = Math.min((W - 80) / (MAP_W - 300), (H - 80) / (MAP_H - 260));
-      const ox = W / 2 - (MAP_X0 + 150 + (MAP_W - 300) / 2) * scale;
+      const scale = Math.min((W - 340) / (MAP_W - 300), (H - 60) / (MAP_H - 260));
+      const ox = W / 2 + 120 - (MAP_X0 + 150 + (MAP_W - 300) / 2) * scale;
       const oy = H / 2 - (MAP_Z0 + 130 + (MAP_H - 260) / 2) * scale;
       const sx = (x) => ox + x * scale, sy = (z) => oy + z * scale;
       g.imageSmoothingEnabled = true;
