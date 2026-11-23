@@ -1,4 +1,11 @@
-# SUNVALE — Salt & Neon
+# Sunvale
+
+[![make.fun · gta6-01](https://make.fun/badge/gta6-01.svg)](https://make.fun/bounty/gta6-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-01)
+[![rank](https://make.fun/badge/gta6-01/EdwardusBenny/Make-Fun-1/rank.svg)](https://make.fun/bounty/gta6-01/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=gta6-01)
+[![reward](https://make.fun/badge/gta6-01/EdwardusBenny/Make-Fun-1/reward.svg)](https://make.fun/bounty/gta6-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-01)
+
+An entry in make.fun's [Make GTA 6](https://make.fun/bounty/gta6-01) bounty.
+
 
 An original open-world crime game set in **Sunvale**, a sun-soaked coastal city, made for the
 make.fun "Make GTA 6" bounty. It runs in desktop Chrome from the static files in `game/`
