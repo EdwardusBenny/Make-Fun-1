@@ -8,7 +8,7 @@ import { Human } from '../actors/human.js';
 import { rand, randInt, pick } from '../core/random.js';
 import { clamp, wrapAngle } from '../core/mathutil.js';
 
-const TARGET_COUNT = 26;
+const TARGET_COUNT = 32;
 const DESPAWN = 230;
 
 function bezier(p0, p1, p2, t) {
@@ -167,7 +167,7 @@ export function createTraffic(world, vehicles) {
     attachBrain,
     /** Fill the streets around (x,z) at load. */
     populate(x, z, count = TARGET_COUNT) {
-      for (let k = 0; k < count; k++) spawnAround(x, z, 12, 200);
+      for (let k = 0; k < count; k++) spawnAround(x, z, 10, k < count * 0.6 ? 110 : 200);
     },
     update(dt) {
       const p = world.focus;

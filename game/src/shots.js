@@ -68,28 +68,37 @@ const scenes = {
     game.player.human.health = 86;
     game.player.human.armour = 40;
     game.hud.radio('WAVE 98.7', "Sunvale's synth station");
+    game.hud.clearBanner();
     game.updateHud(DT);
   },
   async chase(game) {
-    begin(game, 19.15, 23310);
+    begin(game, 19.3, 23310);
     game.missions.setCompleted(['homecoming', 'bait', 'repo']);
     giveWeapon(game.player.arsenal, 'smg', 120);
     game.player.arsenal.current = 'smg';
-    const x = 5 * PITCH - LANE_INNER, z = 1 * PITCH + 20;
+    const x = 5 * PITCH - LANE_INNER, z = 1 * PITCH + 24;
     game.place(x, z, 0);
     game.populate();
-    const v = driveCar(game, 'vela', '#ffb000', x, z, 1, 5, 1, 20, LANE_INNER, 21);
+    const v = driveCar(game, 'vela', '#ffb000', x, z, 1, 5, 1, 24, LANE_INNER, 21);
     game.wanted.atLeast(4);
-    for (const [dz, dx] of [[-16, 2.2], [-30, -2.5], [-45, 1]]) {
+    const cops = [];
+    for (const [dz, dx] of [[-9, -3.4], [-15, 0.6], [-23, -2.6]]) {
       const c = game.police.spawnCar(x, z + 300);
       if (!c) continue;
-      c.x = x + dx; c.z = z + dz; c.heading = 0; c.vx = 0; c.vz = 20;
+      c.x = x + dx; c.z = z + dz; c.heading = 0; c.vx = 0; c.vz = 21;
+      cops.push(c);
     }
-    simulate(game, 0.2);
-    game.heli.x = x + 15; game.heli.z = z + 10; game.heli.y = 40;
-    game.cam.yaw = Math.PI * 0.86; game.cam.pitch = 0.16; game.cam.idle = -100;
-    simulate(game, 2.4, () => { game.cam.idle = -100; game.cam.yaw = Math.PI * 0.86 + v.heading; });
+    // clear the lane ahead and behind of civilians so the chase reads clearly
+    for (const t of [...game.vehicles.list]) {
+      if (t !== v && t.ai?.kind === 'traffic' && Math.abs(t.x - x) < 9 && t.z > z - 60 && t.z < z + 60) game.vehicles.remove(t);
+    }
+    const look = () => { game.cam.idle = -100; game.cam.yaw = v.heading + Math.PI * 0.8; game.cam.pitch = 0.34; };
+    simulate(game, 1.3, look);
+    game.heli.active = true;
+    game.heli.x = v.x + 6; game.heli.z = v.z - 30; game.heli.y = 21;
+    simulate(game, 0.2, look);
     v.ai = null;
+    game.hud.clearBanner();
     game.updateHud(DT);
   },
   async combat(game) {
@@ -99,7 +108,7 @@ const scenes = {
     giveWeapon(game.player.arsenal, 'pistol', 60);
     game.player.arsenal.current = 'smg';
     const cx = PIER.x0 + 7;
-    game.place(cx - 1.5, CITY_H + 96, 0);
+    game.place(cx - 1, CITY_H + 98, 0);
     game.populate();
     game.missions.startById('sharks');
     game.missions.skipTo(3);
@@ -114,15 +123,19 @@ const scenes = {
       h.heading = Math.atan2(t.x - h.x, t.z - h.z);
       const m = h.muzzle();
       const dx = t.x - m.x, dy = t.y + 1.3 - m.y, dz = t.z - m.z, l = Math.hypot(dx, dy, dz);
-      game.combat.shoot(h, 'smg', m, { x: dx / l, y: dy / l, z: dz / l });
+      game.combat.shoot(h, 'smg', m, { x: dx / l, y: dy / l, z: dz / l }, { spread: 0.03 });
     };
-    simulate(game, 2.0, (t, lastStep) => {
+    simulate(game, 1.6, (t, lastStep) => {
       h.aiming = true;
-      game.cam.yaw = h.heading - 0.05; game.cam.pitch = 0.05;
-      if (Math.round(t / DT) % 3 === 0 || lastStep) shootAt();
+      if ((t > 1.1 && Math.round(t / DT) % 3 === 0) || lastStep) shootAt();
     });
+    game.hud.clearBanner();
     game.updateHud(DT);
-    document.getElementById('hud-crosshair').classList.add('on');
+    const cam = game.camera;
+    cam.position.set(h.x + 3.0, h.y + 2.2, h.z - 4.4);
+    cam.lookAt(h.x - 1.2, h.y + 1.3, h.z + 14);
+    cam.fov = 60; cam.updateProjectionMatrix();
+    document.getElementById('hud-crosshair').classList.remove('on');
   },
   async map(game) {
     begin(game, 17.5, 41760);

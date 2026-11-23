@@ -168,7 +168,7 @@ export function createGame(canvas, { audio = null } = {}) {
       game.activities.preInput(input);
       if (game.state === 'play') player.update(dt, input, cam);
     }
-    if (game.state !== 'play') {
+    if (game.state === 'wasted' || game.state === 'busted') {
       game.stateTime += dt;
       game.timeScale = game.stateTime < 3 ? 0.35 : 1;
       if (game.stateTime > 4.2) { game.timeScale = 1; respawn(game.state); }

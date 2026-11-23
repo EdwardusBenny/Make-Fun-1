@@ -5,7 +5,7 @@ import { Human } from './human.js';
 import { NX, NZ, blockRect, SIDEWALK, CITY_H, CITY_W, HALF_ROAD } from '../city/layout.js';
 import { rand, randInt, randRange } from '../core/random.js';
 
-const TARGET = 46;
+const TARGET = 60;
 const DESPAWN = 150;
 
 /** Point on the sidewalk loop of block (i,j) at parameter s (0..1 around the perimeter). */
@@ -150,7 +150,7 @@ export function createPedestrians(world) {
     list: peds,
     spawnNear,
     remove,
-    populate(x, z) { for (let k = 0; k < TARGET; k++) spawnNear(x, z, 6, 120); },
+    populate(x, z) { for (let k = 0; k < TARGET; k++) spawnNear(x, z, 4, k < TARGET * 0.6 ? 70 : 130); },
     update(dt) {
       const p = world.focus;
       for (const h of [...peds]) {

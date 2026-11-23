@@ -33,6 +33,7 @@ export function createHud() {
       el.banner.className = `on ${kind}`;
       bannerTime = seconds;
     },
+    clearBanner() { bannerTime = 0; el.banner.className = ''; },
     radio(name, tagline) { el.radio.innerHTML = `${name}<small>${tagline}</small>`; el.radio.classList.add('on'); radioTime = 3.5; },
     timer(text) { set('timer', el.timer, 'textContent', text ?? ''); },
     hurt() { hitTime = 0.35; },

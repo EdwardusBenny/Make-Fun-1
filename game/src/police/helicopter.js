@@ -34,7 +34,7 @@ function buildHeli() {
     g.add(skid);
   }
   const lightCone = new THREE.Mesh(new THREE.ConeGeometry(7, 46, 24, 1, true).translate(0, -23, 0),
-    new THREE.MeshBasicMaterial({ color: '#fff6d0', transparent: true, opacity: 0.09, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide }));
+    new THREE.MeshBasicMaterial({ color: '#fff6d0', transparent: true, opacity: 0.05, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide }));
   lightCone.position.set(0, -1.2, 1.2);
   g.add(body, stripe, nose, boom, fin, rotor, tailRotor, lightCone);
   g.traverse((o) => { if (o.isMesh && o !== lightCone) o.castShadow = true; });

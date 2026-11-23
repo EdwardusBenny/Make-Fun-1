@@ -181,7 +181,7 @@ export function createPolice(world, { vehicles, combat, wanted }) {
       b.cool -= dt;
       if (b.cool <= 0) {
         b.cool = 0.75 + rand() * 0.7;
-        combat.npcShoot(o, p.vehicle ? p.human : p.human, 'pistol', 0.62 + wanted.level * 0.04);
+        combat.npcShoot(o, p.human, 'pistol', 0.48 + wanted.level * 0.04);
       }
     } else {
       o.move(px - o.x, pz - o.z, 6.2, dt);

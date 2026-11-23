@@ -6,7 +6,7 @@ import { rand } from '../core/random.js';
 const THRESHOLDS = [1, 5, 11, 20, 32];
 /** Heat each crime adds, and whether someone must witness it for it to count. */
 const CRIMES = {
-  gunfire: { heat: 1, witness: false },
+  gunfire: { heat: 1, witness: false, cap: 2, every: 4 },
   assault: { heat: 1, witness: true },
   carjack: { heat: 1, witness: true },
   hitPed: { heat: 1, witness: true },
@@ -20,13 +20,19 @@ const CRIMES = {
 
 export function createWanted(world) {
   const w = {
-    heat: 0, level: 0, unseen: 0, seenX: 0, seenZ: 0, flashing: false, searchRadius: 0, frozen: false,
+    heat: 0, level: 0, lastReport: {}, unseen: 0, seenX: 0, seenZ: 0, flashing: false, searchRadius: 0, frozen: false,
     /** Seconds until the search is called off at the current level. */
     get evadeTime() { return 7 + w.level * 3.5; },
     report(kind, x = world.player.x, z = world.player.z) {
       const c = CRIMES[kind];
       if (!c || w.frozen) return;
+      if (c.every) {
+        // repeated gunfire is one report every few seconds, not one per bullet
+        if (world.time - (w.lastReport[kind] ?? -99) < c.every) return;
+        w.lastReport[kind] = world.time;
+      }
       if (c.witness && !copCanSee(x, z, 55) && rand() > 0.45) return;
+      if (c.cap && w.level >= c.cap) { w.unseen = 0; return; }
       w.heat += c.heat;
       w.setFromHeat();
       w.unseen = 0; w.seenX = x; w.seenZ = z;

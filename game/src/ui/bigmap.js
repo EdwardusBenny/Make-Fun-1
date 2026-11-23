@@ -16,14 +16,17 @@ export function createBigMap(canvas, mapImage) {
   return {
     draw(player, blips, gps, legend) {
       const W = canvas.width = window.innerWidth, H = canvas.height = window.innerHeight;
-      g.fillStyle = '#123848'; g.fillRect(0, 0, W, H);
+      g.fillStyle = '#2a86a8'; g.fillRect(0, 0, W, H);
       const scale = Math.min((W - 80) / (MAP_W - 300), (H - 80) / (MAP_H - 260));
       const ox = W / 2 - (MAP_X0 + 150 + (MAP_W - 300) / 2) * scale;
       const oy = H / 2 - (MAP_Z0 + 130 + (MAP_H - 260) / 2) * scale;
       const sx = (x) => ox + x * scale, sy = (z) => oy + z * scale;
       g.imageSmoothingEnabled = true;
+      g.fillStyle = '#7fa860';
+      g.fillRect(0, 0, sx(MAP_X0 + 1), sy(MAP_Z0 + 600));
+      g.fillRect(0, 0, W, sy(MAP_Z0 + 1));
       g.drawImage(mapImage, sx(MAP_X0), sy(MAP_Z0), MAP_W * scale, MAP_H * scale);
-      g.textAlign = 'center'; g.textBaseline = 'middle';
+      g.textAlign = 'center'; g.textBaseline = 'middle'; g.lineJoin = 'round';
       for (const [name, x, z] of LABELS) {
         g.font = `bold ${Math.round(15 * scale * 1.4)}px "Trebuchet MS", sans-serif`;
         g.lineWidth = 4; g.strokeStyle = 'rgba(0,0,0,0.7)';

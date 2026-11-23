@@ -11,7 +11,7 @@ const { chromium } = require('playwright');
   await page.goto('http://localhost:8080/' + query);
   try { await page.waitForFunction(() => window.__shotReady === true, null, { timeout: Number(wait) }); }
   catch { console.log('timeout waiting for __shotReady'); }
-  console.log('ready in', Date.now() - t0, 'ms');
+  console.log('ready in', Date.now() - t0, 'ms', await page.evaluate(() => { const g = window.__sunvale; return g ? `calls ${g.renderer.info.render.calls} tris ${g.renderer.info.render.triangles} humans ${g.world.humans.length} cars ${g.world.vehicles.length}` : ''; }));
   await page.screenshot({ path: out, type: out.endsWith('.jpg') ? 'jpeg' : 'png', quality: out.endsWith('.jpg') ? 80 : undefined });
   await browser.close();
 })();

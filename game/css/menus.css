@@ -14,3 +14,5 @@
 table.keys { border-collapse: collapse; font-size: 18px; background: rgba(0,0,0,.55); }
 table.keys td { padding: 6px 20px; border-bottom: 1px solid rgba(255,255,255,.08); }
 table.keys td:first-child { font-weight: bold; color: #ffd23f; text-align: right; }
+#menu-title .menu-list { position: absolute; left: 7vw; bottom: 12vh; }
+#menu-title .menu-list button { font-size: 24px; }

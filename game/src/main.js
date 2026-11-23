@@ -26,6 +26,7 @@ const audio = createAudio();
 const game = createGame(canvas, { audio });
 wireAudio(audio, game);
 game.save = () => writeSave(game);
+window.__sunvale = game; // handle for automated tests in the dev tools
 paintLogo(document.getElementById('logo'));
 document.getElementById('loading').classList.add('hidden');
 
@@ -66,10 +67,11 @@ function run() {
   function startGame(data) {
     audio.init();
     game.state = 'play';
+    game.timeScale = 1;
     game.player.human.setVisible(true);
     if (data) applySave(game, data);
     else {
-      game.place(PLACES.start.x, PLACES.start.z, Math.PI);
+      game.place(PLACES.start.x, PLACES.start.z, 0);
       game.world.hour = 16.8;
       game.player.money = 120;
       game.hud.snapMoney(120);
@@ -92,6 +94,7 @@ function run() {
     game.paused = true;
     menus.pauseStats(game);
     menus.show('pause');
+    game.hud.show(false);
     input.releaseLock();
   }
   function resume() {
@@ -100,6 +103,7 @@ function run() {
     game.mapOpen = false;
     document.getElementById('bigmap').classList.add('hidden');
     menus.show(null);
+    game.hud.show(true);
     canvas.requestPointerLock?.();
   }
 

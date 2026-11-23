@@ -90,18 +90,19 @@ export function buildLandmarks(scene) {
   const bulbs = new THREE.Mesh(new THREE.TorusGeometry(R + 0.3, 0.18, 4, 96), new THREE.MeshBasicMaterial({ color: '#ffd8f0' }));
   wheel.add(bulbs);
   const wx = gx, wz = PIER.z1 - 40, wy = PIER_DECK + R + 3;
+  // the wheel faces down the pier, so it greets everyone walking out from the beach
   wheel.position.set(wx, wy, wz);
-  wheel.rotation.y = Math.PI / 2;
   group.add(wheel);
   for (const dz of [-1, 1]) {
     for (const dx of [-1, 1]) {
-      const legLen = Math.hypot(R * 0.6, R + 3);
-      m.makeTranslation(wx + dz * 2.6, PIER_DECK + (R + 3) / 2, wz + dx * R * 0.3);
-      m.multiply(new THREE.Matrix4().makeRotationX(dx * Math.atan2(R * 0.6, R + 3)));
+      const spread = R * 0.32;
+      const legLen = Math.hypot(spread, R + 3);
+      m.makeTranslation(wx + dx * spread / 2, PIER_DECK + (R + 3) / 2, wz + dz * 2.6);
+      m.multiply(new THREE.Matrix4().makeRotationZ(dx * Math.atan2(spread, R + 3)));
       solid.add(new THREE.CylinderGeometry(0.35, 0.5, legLen, 6), m, '#d8d8d8');
     }
   }
-  addCollider(wx - 3.5, wz - R * 0.65, wx + 3.5, wz + R * 0.65, R * 2 + 4);
+  addCollider(wx - 3, wz - 3.2, wx + 3, wz + 3.2, R * 2 + 4);
 
   // --- harbour cranes along the quay
   const craneColors = ['#e74c3c', '#f39c12', '#e74c3c'];

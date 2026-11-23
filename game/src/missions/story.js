@@ -114,10 +114,9 @@ export const MISSIONS = [
       goTo(PLACES.pierGate, 'Go to <b>Starwheel Pier</b>.', { radius: 5 }),
       run((ctx) => {
         const cx = PIER.x0 + 7;
-        ctx.data.rico = ctx.spawnEnemy('boss', cx, PIER.z1 - 30, { weapon: 'smg', name: 'Rico Salas', skill: 0.6, alertRange: 45 });
-        ctx.data.rico.look.shirt = '#0b7a75';
+        ctx.data.rico = ctx.spawnEnemy('boss', cx, PIER.z1 - 62, { weapon: 'smg', name: 'Rico Salas', skill: 0.6, alertRange: 45 });
         for (let k = 0; k < 6; k++) {
-          const z = CITY_H + 85 + k * 22;
+          const z = CITY_H + 110 + k * 12;
           ctx.spawnEnemy('gang', cx + (k % 2 ? 3 : -3), z, { weapon: k % 3 === 0 ? 'smg' : 'pistol', skill: 0.5, alertRange: 32 });
         }
       }),
